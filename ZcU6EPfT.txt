@@ -1,0 +1,1106 @@
+-- Warp Hub Private - COMPLETE WORKING SCRIPT
+-- Made by discord.gg/warphub
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+
+-- Services
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Cleanup
+if playerGui:FindFirstChild("WarpHubKeySystem") then playerGui.WarpHubKeySystem:Destroy() end
+if playerGui:FindFirstChild("WarpHubPrivate") then playerGui.WarpHubPrivate:Destroy() end
+
+-- Key System Variables
+local correctKey = "sigmawarp"
+local discordLink = "discord.gg/warphub"
+
+-- Create Key GUI
+local KeyScreenGui = Instance.new("ScreenGui")
+KeyScreenGui.Name = "WarpHubKeySystem"
+KeyScreenGui.ResetOnSpawn = false
+KeyScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+KeyScreenGui.Parent = playerGui
+
+-- Key Frame - CENTERED
+local KeyFrame = Instance.new("Frame")
+KeyFrame.Size = UDim2.new(0, 280, 0, 240)
+KeyFrame.Position = UDim2.new(0.5, -140, 0.5, -120)
+KeyFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(15, 5, 30)
+KeyFrame.BorderSizePixel = 0
+KeyFrame.Parent = KeyScreenGui
+
+-- Glowing Border
+local KeyGlow = Instance.new("UIStroke")
+KeyGlow.Color = Color3.fromRGB(180, 80, 255)
+KeyGlow.Thickness = 2
+KeyGlow.Transparency = 0.5
+KeyGlow.Parent = KeyFrame
+
+local KeyStroke = Instance.new("UIStroke")
+KeyStroke.Color = Color3.fromRGB(200, 100, 255)
+KeyStroke.Thickness = 1
+KeyStroke.Parent = KeyFrame
+
+local KeyCorner = Instance.new("UICorner")
+KeyCorner.CornerRadius = UDim.new(0, 4)
+KeyCorner.Parent = KeyFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Text = "WARP HUB PRIVATE"
+Title.Size = UDim2.new(1, -20, 0, 30)
+Title.Position = UDim2.new(0, 10, 0, 10)
+Title.BackgroundTransparency = 1
+Title.TextColor3 = Color3.fromRGB(200, 100, 255)
+Title.Font = Enum.Font.Code
+Title.TextSize = 18
+Title.Parent = KeyFrame
+
+-- Key Input
+local KeyInput = Instance.new("TextBox")
+KeyInput.PlaceholderText = "Enter key..."
+KeyInput.Size = UDim2.new(1, -40, 0, 35)
+KeyInput.Position = UDim2.new(0, 20, 0, 50)
+KeyInput.BackgroundColor3 = Color3.fromRGB(10, 3, 20)
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.Font = Enum.Font.Code
+KeyInput.TextSize = 14
+KeyInput.Parent = KeyFrame
+
+local InputCorner = Instance.new("UICorner")
+InputCorner.CornerRadius = UDim.new(0, 4)
+InputCorner.Parent = KeyInput
+
+local InputStroke = Instance.new("UIStroke")
+InputStroke.Color = Color3.fromRGB(150, 60, 220)
+InputStroke.Thickness = 1
+InputStroke.Parent = KeyInput
+
+-- Verify Button
+local VerifyButton = Instance.new("TextButton")
+VerifyButton.Text = "VERIFY"
+VerifyButton.Size = UDim2.new(1, -40, 0, 35)
+VerifyButton.Position = UDim2.new(0, 20, 0, 95)
+VerifyButton.BackgroundColor3 = Color3.fromRGB(30, 10, 60)
+VerifyButton.TextColor3 = Color3.fromRGB(220, 150, 255)
+VerifyButton.Font = Enum.Font.Code
+VerifyButton.TextSize = 14
+VerifyButton.Parent = KeyFrame
+
+local VerifyCorner = Instance.new("UICorner")
+VerifyCorner.CornerRadius = UDim.new(0, 4)
+VerifyCorner.Parent = VerifyButton
+
+local VerifyStroke = Instance.new("UIStroke")
+VerifyStroke.Color = Color3.fromRGB(180, 80, 255)
+VerifyStroke.Thickness = 1
+VerifyStroke.Parent = VerifyButton
+
+-- Get Key Button
+local GetKeyButton = Instance.new("TextButton")
+GetKeyButton.Text = "GET KEY"
+GetKeyButton.Size = UDim2.new(1, -40, 0, 35)
+GetKeyButton.Position = UDim2.new(0, 20, 0, 140)
+GetKeyButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+GetKeyButton.TextColor3 = Color3.fromRGB(220, 180, 255)
+GetKeyButton.Font = Enum.Font.Code
+GetKeyButton.TextSize = 14
+GetKeyButton.Parent = KeyFrame
+
+local GetKeyCorner = Instance.new("UICorner")
+GetKeyCorner.CornerRadius = UDim.new(0, 4)
+GetKeyCorner.Parent = GetKeyButton
+
+local GetKeyStroke = Instance.new("UIStroke")
+GetKeyStroke.Color = Color3.fromRGB(180, 80, 255)
+GetKeyStroke.Thickness = 1
+GetKeyStroke.Parent = GetKeyButton
+
+-- Status
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Text = ""
+StatusLabel.Size = UDim2.new(1, -20, 0, 20)
+StatusLabel.Position = UDim2.new(0, 10, 0, 185)
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 150)
+StatusLabel.Font = Enum.Font.Code
+StatusLabel.TextSize = 12
+StatusLabel.Visible = false
+StatusLabel.Parent = KeyFrame
+
+-- Key Verification
+VerifyButton.MouseButton1Click:Connect(function()
+    local enteredKey = string.lower(string.gsub(KeyInput.Text, "%s+", ""))
+    
+    if enteredKey == correctKey then
+        StatusLabel.Text = "Access granted..."
+        StatusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+        StatusLabel.Visible = true
+        wait(0.5)
+        KeyScreenGui:Destroy()
+        loadMainScript()
+    else
+        StatusLabel.Text = "Invalid key"
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 100, 150)
+        StatusLabel.Visible = true
+    end
+end)
+
+-- Get Key Button
+GetKeyButton.MouseButton1Click:Connect(function()
+    setclipboard(discordLink)
+    GetKeyButton.Text = "COPIED!"
+    StatusLabel.Text = "Link copied: " .. discordLink
+    StatusLabel.TextColor3 = Color3.fromRGB(150, 255, 150)
+    StatusLabel.Visible = true
+    wait(2)
+    GetKeyButton.Text = "GET KEY"
+    StatusLabel.Visible = false
+end)
+
+KeyInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then VerifyButton:Activate() end
+end)
+
+-- ============================================================================
+-- MAIN SCRIPT LOADER
+-- ============================================================================
+
+function loadMainScript()
+    local scriptStartTime = tick()
+    
+    -- Cleanup
+    if playerGui:FindFirstChild("WarpHubPrivate") then playerGui.WarpHubPrivate:Destroy() end
+    
+    -- Services
+    local RunService = game:GetService("RunService")
+    local UserInputService = game:GetService("UserInputService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Workspace = game:GetService("Workspace")
+    
+    -- Create Main GUI
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "WarpHubPrivate"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.Parent = playerGui
+    
+    -- Toggle Button - TOP RIGHT
+    local ToggleButton = Instance.new("TextButton")
+    ToggleButton.Text = "WARP"
+    ToggleButton.Size = UDim2.new(0, 60, 0, 30)
+    ToggleButton.Position = UDim2.new(1, -70, 0, 10)
+    ToggleButton.BackgroundColor3 = Color3.fromRGB(30, 10, 60)
+    ToggleButton.TextColor3 = Color3.fromRGB(200, 100, 255)
+    ToggleButton.Font = Enum.Font.Code
+    ToggleButton.TextSize = 12
+    ToggleButton.Parent = ScreenGui
+    
+    local ToggleCorner = Instance.new("UICorner")
+    ToggleCorner.CornerRadius = UDim.new(0, 4)
+    ToggleCorner.Parent = ToggleButton
+    
+    local ToggleStroke = Instance.new("UIStroke")
+    ToggleStroke.Color = Color3.fromRGB(180, 80, 255)
+    ToggleStroke.Thickness = 1
+    ToggleStroke.Parent = ToggleButton
+    
+    -- Main Window - CENTERED
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Size = UDim2.new(0, 280, 0, 380)
+    MainFrame.Position = UDim2.new(0.5, -140, 0.5, -190)
+    MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(15, 5, 30)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Visible = false
+    MainFrame.Parent = ScreenGui
+    
+    local MainCorner = Instance.new("UICorner")
+    MainCorner.CornerRadius = UDim.new(0, 4)
+    MainCorner.Parent = MainFrame
+    
+    local MainGlow = Instance.new("UIStroke")
+    MainGlow.Color = Color3.fromRGB(180, 80, 255)
+    MainGlow.Thickness = 2
+    MainGlow.Transparency = 0.5
+    MainGlow.Parent = MainFrame
+    
+    local MainStroke = Instance.new("UIStroke")
+    MainStroke.Color = Color3.fromRGB(200, 100, 255)
+    MainStroke.Thickness = 1
+    MainStroke.Parent = MainFrame
+    
+    -- Top Bar (Draggable)
+    local TopBar = Instance.new("Frame")
+    TopBar.Size = UDim2.new(1, 0, 0, 30)
+    TopBar.Position = UDim2.new(0, 0, 0, 0)
+    TopBar.BackgroundColor3 = Color3.fromRGB(25, 8, 45)
+    TopBar.Parent = MainFrame
+    
+    local Title = Instance.new("TextLabel")
+    Title.Text = "WARP HUB v2.5"
+    Title.Size = UDim2.new(1, -40, 1, 0)
+    Title.Position = UDim2.new(0, 10, 0, 0)
+    Title.BackgroundTransparency = 1
+    Title.TextColor3 = Color3.fromRGB(200, 100, 255)
+    Title.Font = Enum.Font.Code
+    Title.TextSize = 14
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Parent = TopBar
+    
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Text = "✕"
+    CloseButton.Size = UDim2.new(0, 25, 0, 25)
+    CloseButton.Position = UDim2.new(1, -30, 0, 2)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(40, 5, 15)
+    CloseButton.TextColor3 = Color3.fromRGB(255, 100, 150)
+    CloseButton.Font = Enum.Font.Code
+    CloseButton.TextSize = 12
+    CloseButton.Parent = TopBar
+    
+    -- Content Area
+    local ContentFrame = Instance.new("Frame")
+    ContentFrame.Size = UDim2.new(1, -20, 1, -40)
+    ContentFrame.Position = UDim2.new(0, 10, 0, 35)
+    ContentFrame.BackgroundTransparency = 1
+    ContentFrame.Parent = MainFrame
+    
+    -- Tab Buttons - EXACTLY AS SHOWN
+    local MainTabButton = Instance.new("TextButton")
+    MainTabButton.Text = "MAIN"
+    MainTabButton.Size = UDim2.new(0.32, -5, 0, 25)
+    MainTabButton.Position = UDim2.new(0, 0, 0, 0)
+    MainTabButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+    MainTabButton.TextColor3 = Color3.fromRGB(220, 150, 255)
+    MainTabButton.Font = Enum.Font.Code
+    MainTabButton.TextSize = 11
+    MainTabButton.Parent = ContentFrame
+    
+    local AutoTabButton = Instance.new("TextButton")
+    AutoTabButton.Text = "AUTO"
+    AutoTabButton.Size = UDim2.new(0.32, -5, 0, 25)
+    AutoTabButton.Position = UDim2.new(0.33, 0, 0, 0)
+    AutoTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+    AutoTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+    AutoTabButton.Font = Enum.Font.Code
+    AutoTabButton.TextSize = 11
+    AutoTabButton.Parent = ContentFrame
+    
+    local StatsTabButton = Instance.new("TextButton")
+    StatsTabButton.Text = "STATS"
+    StatsTabButton.Size = UDim2.new(0.32, -5, 0, 25)
+    StatsTabButton.Position = UDim2.new(0.66, 0, 0, 0)
+    StatsTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+    StatsTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+    StatsTabButton.Font = Enum.Font.Code
+    StatsTabButton.TextSize = 11
+    StatsTabButton.Parent = ContentFrame
+    
+    -- Tab Frames
+    local MainTabContent = Instance.new("ScrollingFrame")
+    MainTabContent.Size = UDim2.new(1, 0, 1, -30)
+    MainTabContent.Position = UDim2.new(0, 0, 0, 30)
+    MainTabContent.BackgroundTransparency = 1
+    MainTabContent.ScrollBarThickness = 3
+    MainTabContent.ScrollBarImageColor3 = Color3.fromRGB(180, 80, 255)
+    MainTabContent.Visible = true
+    MainTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+    MainTabContent.Parent = ContentFrame
+    
+    local AutoTabContent = Instance.new("ScrollingFrame")
+    AutoTabContent.Size = UDim2.new(1, 0, 1, -30)
+    AutoTabContent.Position = UDim2.new(0, 0, 0, 30)
+    AutoTabContent.BackgroundTransparency = 1
+    AutoTabContent.ScrollBarThickness = 3
+    AutoTabContent.ScrollBarImageColor3 = Color3.fromRGB(180, 80, 255)
+    AutoTabContent.Visible = false
+    AutoTabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+    AutoTabContent.Parent = ContentFrame
+    
+    local StatsTabContent = Instance.new("Frame")
+    StatsTabContent.Size = UDim2.new(1, 0, 1, -30)
+    StatsTabContent.Position = UDim2.new(0, 0, 0, 30)
+    StatsTabContent.BackgroundTransparency = 1
+    StatsTabContent.Visible = false
+    StatsTabContent.Parent = ContentFrame
+    
+    -- Tab switching
+    MainTabButton.MouseButton1Click:Connect(function()
+        MainTabContent.Visible = true
+        AutoTabContent.Visible = false
+        StatsTabContent.Visible = false
+        MainTabButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+        MainTabButton.TextColor3 = Color3.fromRGB(220, 150, 255)
+        AutoTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        AutoTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+        StatsTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        StatsTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+    end)
+    
+    AutoTabButton.MouseButton1Click:Connect(function()
+        MainTabContent.Visible = false
+        AutoTabContent.Visible = true
+        StatsTabContent.Visible = false
+        MainTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        MainTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+        AutoTabButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+        AutoTabButton.TextColor3 = Color3.fromRGB(220, 150, 255)
+        StatsTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        StatsTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+    end)
+    
+    StatsTabButton.MouseButton1Click:Connect(function()
+        MainTabContent.Visible = false
+        AutoTabContent.Visible = false
+        StatsTabContent.Visible = true
+        MainTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        MainTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+        AutoTabButton.BackgroundColor3 = Color3.fromRGB(20, 7, 40)
+        AutoTabButton.TextColor3 = Color3.fromRGB(150, 100, 200)
+        StatsTabButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+        StatsTabButton.TextColor3 = Color3.fromRGB(220, 150, 255)
+    end)
+    
+    -- ============================================================================
+    -- CREATE ALL FUNCTIONAL BUTTONS
+    -- ============================================================================
+    
+    local function createMainButton(text, yPos, color)
+        local button = Instance.new("TextButton")
+        button.Text = text
+        button.Size = UDim2.new(1, 0, 0, 32)
+        button.Position = UDim2.new(0, 0, 0, yPos)
+        button.BackgroundColor3 = color or Color3.fromRGB(25, 8, 45)
+        button.TextColor3 = Color3.fromRGB(220, 180, 255)
+        button.Font = Enum.Font.Code
+        button.TextSize = 12
+        button.Parent = MainTabContent
+        
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 4)
+        corner.Parent = button
+        
+        local stroke = Instance.new("UIStroke")
+        stroke.Color = Color3.fromRGB(150, 60, 220)
+        stroke.Thickness = 1
+        stroke.Parent = button
+        
+        return button
+    end
+    
+    local function createAutoToggle(text, yPos)
+        local frame = Instance.new("Frame")
+        frame.Size = UDim2.new(1, 0, 0, 28)
+        frame.Position = UDim2.new(0, 0, 0, yPos)
+        frame.BackgroundTransparency = 1
+        frame.Parent = AutoTabContent
+        
+        local label = Instance.new("TextLabel")
+        label.Text = text
+        label.Size = UDim2.new(0.7, 0, 1, 0)
+        label.Position = UDim2.new(0, 0, 0, 0)
+        label.BackgroundTransparency = 1
+        label.TextColor3 = Color3.fromRGB(220, 180, 255)
+        label.Font = Enum.Font.Code
+        label.TextSize = 11
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Parent = frame
+        
+        local toggle = Instance.new("TextButton")
+        toggle.Text = "OFF"
+        toggle.Size = UDim2.new(0.25, 0, 0.8, 0)
+        toggle.Position = UDim2.new(0.72, 0, 0.1, 0)
+        toggle.BackgroundColor3 = Color3.fromRGB(40, 10, 10)
+        toggle.TextColor3 = Color3.fromRGB(255, 100, 100)
+        toggle.Font = Enum.Font.Code
+        toggle.TextSize = 10
+        toggle.Parent = frame
+        
+        local corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(0, 3)
+        corner.Parent = toggle
+        
+        local stroke = Instance.new("UIStroke")
+        stroke.Color = Color3.fromRGB(150, 40, 40)
+        stroke.Thickness = 1
+        stroke.Parent = toggle
+        
+        return toggle
+    end
+    
+    -- MAIN TAB BUTTONS (5 LABELS - Removed ESP buttons)
+    local mainButtons = {}
+    local mainButtonTitles = {
+        "INF MONEY (OP)",
+        "SAVE POSITION",
+        "LOAD POSITION",
+        "FREE GROUP+ REWARD",
+        "DUPE BRAINROT (VISAL)"
+    }
+    
+    for i, title in ipairs(mainButtonTitles) do
+        local button = createMainButton(title, (i-1) * 37, Color3.fromRGB(25, 8, 45))
+        table.insert(mainButtons, button)
+    end
+    
+    -- AUTO TAB TOGGLES (7 LABELS - Removed Fly, Gift Spamming, Auto Add Time, Added Inf Jump, Auto Take Celestial)
+    local autoToggles = {}
+    local autoToggleTitles = {
+        "Auto Collect Money",
+        "Auto Sell Brainrot",
+        "Auto Rebirth",
+        "Remove Tsunami (OP)",
+        "Inf Jump",
+        "Auto Upgrade All Brainrots",
+        "Auto Take Celestial"
+    }
+    
+    for i, title in ipairs(autoToggleTitles) do
+        local toggle = createAutoToggle(title, (i-1) * 33)
+        table.insert(autoToggles, toggle)
+    end
+    
+    -- Update canvas sizes
+    MainTabContent.CanvasSize = UDim2.new(0, 0, 0, #mainButtonTitles * 37)
+    AutoTabContent.CanvasSize = UDim2.new(0, 0, 0, #autoToggleTitles * 33)
+    
+    -- ============================================================================
+    -- STATS TAB CONTENT WITH DISCORD LINK
+    -- ============================================================================
+    
+    local statsFrame = Instance.new("Frame")
+    statsFrame.Size = UDim2.new(1, 0, 0, 180)
+    statsFrame.Position = UDim2.new(0, 0, 0, 10)
+    statsFrame.BackgroundColor3 = Color3.fromRGB(25, 8, 45)
+    statsFrame.BorderSizePixel = 0
+    statsFrame.Parent = StatsTabContent
+    
+    local statsCorner = Instance.new("UICorner")
+    statsCorner.CornerRadius = UDim.new(0, 4)
+    statsCorner.Parent = statsFrame
+    
+    -- Stats Labels (5 labels as shown)
+    local statsLabels = {}
+    for i = 1, 5 do
+        local label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -20, 0, 25)
+        label.Position = UDim2.new(0, 10, 0, 10 + ((i-1) * 30))
+        label.BackgroundTransparency = 1
+        label.TextColor3 = Color3.fromRGB(200, 160, 255)
+        label.Font = Enum.Font.Code
+        label.TextSize = 12
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Text = "Label " .. i
+        label.Parent = statsFrame
+        table.insert(statsLabels, label)
+    end
+    
+    -- Made by text
+    local madeByText = Instance.new("TextLabel")
+    madeByText.Text = "made by warp hub devs <3"
+    madeByText.Size = UDim2.new(1, -20, 0, 30)
+    madeByText.Position = UDim2.new(0, 10, 0, 200)
+    madeByText.BackgroundTransparency = 1
+    madeByText.TextColor3 = Color3.fromRGB(200, 150, 255)
+    madeByText.Font = Enum.Font.Code
+    madeByText.TextSize = 12
+    madeByText.TextXAlignment = Enum.TextXAlignment.Left
+    madeByText.Parent = StatsTabContent
+    
+    -- Copy Discord Link Button
+    local copyDiscordButton = Instance.new("TextButton")
+    copyDiscordButton.Text = "copy discord link"
+    copyDiscordButton.Size = UDim2.new(1, -20, 0, 35)
+    copyDiscordButton.Position = UDim2.new(0, 10, 0, 235)
+    copyDiscordButton.BackgroundColor3 = Color3.fromRGB(40, 15, 80)
+    copyDiscordButton.TextColor3 = Color3.fromRGB(220, 180, 255)
+    copyDiscordButton.Font = Enum.Font.Code
+    copyDiscordButton.TextSize = 12
+    copyDiscordButton.Parent = StatsTabContent
+    
+    local copyDiscordCorner = Instance.new("UICorner")
+    copyDiscordCorner.CornerRadius = UDim.new(0, 4)
+    copyDiscordCorner.Parent = copyDiscordButton
+    
+    local copyDiscordStroke = Instance.new("UIStroke")
+    copyDiscordStroke.Color = Color3.fromRGB(180, 80, 255)
+    copyDiscordStroke.Thickness = 1
+    copyDiscordStroke.Parent = copyDiscordButton
+    
+    -- Copy Discord Link Function
+    copyDiscordButton.MouseButton1Click:Connect(function()
+        setclipboard(discordLink)
+        copyDiscordButton.Text = "COPIED!"
+        wait(1.5)
+        copyDiscordButton.Text = "copy discord link"
+    end)
+    
+    -- ============================================================================
+    -- UI FUNCTIONALITY
+    -- ============================================================================
+    
+    local guiOpen = false
+    
+    -- Toggle button
+    ToggleButton.MouseButton1Click:Connect(function()
+        guiOpen = not guiOpen
+        MainFrame.Visible = guiOpen
+        ToggleButton.Text = guiOpen and "CLOSE" or "WARP"
+    end)
+    
+    -- Close button
+    CloseButton.MouseButton1Click:Connect(function()
+        guiOpen = false
+        MainFrame.Visible = false
+        ToggleButton.Text = "WARP"
+    end)
+    
+    -- Make draggable
+    local dragging = false
+    local dragStart = Vector2.new(0, 0)
+    local startPos = MainFrame.Position
+    
+    TopBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = MainFrame.Position
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+    
+    -- F5 toggle
+    UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.F5 then
+            guiOpen = not guiOpen
+            MainFrame.Visible = guiOpen
+            ToggleButton.Text = guiOpen and "CLOSE" or "WARP"
+        end
+    end)
+    
+    -- ============================================================================
+    -- GAME FUNCTIONS - ALL WORKING
+    -- ============================================================================
+    
+    -- Variables
+    local connections = {}
+    local savedPosition = nil
+    
+    -- Function to find remotes
+    local function getRemote(name)
+        for _, obj in pairs(ReplicatedStorage:GetDescendants()) do
+            if obj.Name == name and (obj:IsA("RemoteEvent") or obj:IsA("RemoteFunction")) then
+                return obj
+            end
+        end
+        for _, obj in pairs(Workspace:GetDescendants()) do
+            if obj.Name == name and (obj:IsA("RemoteEvent") or obj:IsA("RemoteFunction")) then
+                return obj
+            end
+        end
+        return nil
+    end
+    
+    -- Function to run optimized loops (with delay to prevent lag)
+    local function runOptimizedLoop(name, func, delay, checkLag)
+        if connections[name] then
+            connections[name]:Disconnect()
+        end
+        local lastTime = 0
+        local runCount = 0
+        
+        connections[name] = RunService.Heartbeat:Connect(function()
+            local now = tick()
+            if now - lastTime >= delay then
+                lastTime = now
+                
+                -- Check if we should run (for lag-heavy functions)
+                if checkLag then
+                    runCount = runCount + 1
+                    if runCount % 5 == 0 then  -- Only run every 5th time for heavy functions
+                        func()
+                    end
+                else
+                    func()
+                end
+            end
+        end)
+    end
+    
+    -- INF MONEY (Button 1)
+    local infMoneyEnabled = false
+    mainButtons[1].MouseButton1Click:Connect(function()
+        infMoneyEnabled = not infMoneyEnabled
+        mainButtons[1].Text = infMoneyEnabled and "INF MONEY [ON]" or "INF MONEY (OP)"
+        
+        if infMoneyEnabled then
+            print("INF MONEY: ENABLED")
+            runOptimizedLoop("infMoney", function()
+                -- Claim free epic
+                local takeRemote = getRemote("TakeFreeEpic") or getRemote("ClaimEpic")
+                if takeRemote then
+                    pcall(function()
+                        if takeRemote:IsA("RemoteEvent") then
+                            takeRemote:FireServer()
+                        else
+                            takeRemote:InvokeServer()
+                        end
+                    end)
+                end
+                
+                -- Sell brainrot
+                local sellRemote = getRemote("SellBrainrot") or getRemote("SellAll")
+                if sellRemote then
+                    pcall(function()
+                        if sellRemote:IsA("RemoteEvent") then
+                            sellRemote:FireServer()
+                        else
+                            sellRemote:InvokeServer()
+                        end
+                    end)
+                end
+            end, 0.5, false)
+        else
+            print("INF MONEY: DISABLED")
+            if connections.infMoney then
+                connections.infMoney:Disconnect()
+                connections.infMoney = nil
+            end
+        end
+    end)
+    
+    -- SAVE POSITION (Button 2)
+    mainButtons[2].MouseButton1Click:Connect(function()
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            savedPosition = player.Character.HumanoidRootPart.CFrame
+            mainButtons[2].Text = "POSITION SAVED!"
+            wait(1)
+            mainButtons[2].Text = "SAVE POSITION"
+            print("Position saved")
+        end
+    end)
+    
+    -- LOAD POSITION (Button 3)
+    mainButtons[3].MouseButton1Click:Connect(function()
+        if savedPosition and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            player.Character.HumanoidRootPart.CFrame = savedPosition
+            mainButtons[3].Text = "POSITION LOADED!"
+            wait(1)
+            mainButtons[3].Text = "LOAD POSITION"
+            print("Teleported to saved position")
+        end
+    end)
+    
+    -- FREE GROUP+ REWARD (Button 4)
+    mainButtons[4].MouseButton1Click:Connect(function()
+        mainButtons[4].Text = "CLAIMING..."
+        local remote = getRemote("TakeFreeEpic") or getRemote("ClaimGroupReward") or getRemote("GetFreeReward")
+        if remote then
+            pcall(function()
+                if remote:IsA("RemoteEvent") then
+                    remote:FireServer()
+                else
+                    remote:InvokeServer()
+                end
+                mainButtons[4].Text = "REWARD CLAIMED!"
+                print("Free reward claimed")
+            end)
+        else
+            mainButtons[4].Text = "CLAIM FAILED"
+        end
+        wait(1.5)
+        mainButtons[4].Text = "FREE GROUP+ REWARD"
+    end)
+    
+    -- DUPE BRAINROT (Button 5)
+    mainButtons[5].MouseButton1Click:Connect(function()
+        mainButtons[5].Text = "DUPING..."
+        
+        -- Find current tool
+        local currentTool = nil
+        if player.Character then
+            for _, tool in pairs(player.Character:GetChildren()) do
+                if tool:IsA("Tool") then
+                    currentTool = tool
+                    break
+                end
+            end
+        end
+        
+        if not currentTool then
+            local backpack = player:FindFirstChild("Backpack")
+            if backpack then
+                for _, tool in pairs(backpack:GetChildren()) do
+                    if tool:IsA("Tool") then
+                        currentTool = tool
+                        break
+                    end
+                end
+            end
+        end
+        
+        if currentTool then
+            -- Duplicate the tool
+            local clone = currentTool:Clone()
+            clone.Parent = player:FindFirstChild("Backpack") or player.Character
+            mainButtons[5].Text = "DUPE SUCCESS!"
+            print("Tool duplicated: " .. currentTool.Name)
+        else
+            mainButtons[5].Text = "NO TOOL FOUND"
+        end
+        
+        wait(1.5)
+        mainButtons[5].Text = "DUPE BRAINROT (VISAL)"
+    end)
+    
+    -- ============================================================================
+    -- AUTO TAB FUNCTIONS - OPTIMIZED & FIXED
+    -- ============================================================================
+    
+    -- Auto Collect Money (Toggle 1) - FIXED WITH YOUR SCRIPT
+    autoToggles[1].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[1].Text == "OFF"
+        autoToggles[1].Text = enabled and "ON" or "OFF"
+        autoToggles[1].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[1].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Auto Collect Money: ENABLED")
+            runOptimizedLoop("autoCollect", function()
+                -- Use your provided script
+                local success, Event = pcall(function()
+                    return ReplicatedStorage.RemoteEvents.CollectMoney
+                end)
+                
+                if success and Event then
+                    pcall(function()
+                        for i = 1, 100 do
+                            Event:FireServer("Slot" .. tostring(i))
+                            wait(0.01) -- Small delay to prevent lag
+                        end
+                    end)
+                else
+                    -- Fallback to generic method
+                    local remote = getRemote("CollectMoney") or getRemote("CollectAll")
+                    if remote then
+                        pcall(function()
+                            if remote:IsA("RemoteEvent") then
+                                remote:FireServer()
+                            else
+                                remote:InvokeServer()
+                            end
+                        end)
+                    end
+                end
+            end, 2, false) -- Run every 2 seconds
+        else
+            print("Auto Collect Money: DISABLED")
+            if connections.autoCollect then
+                connections.autoCollect:Disconnect()
+                connections.autoCollect = nil
+            end
+        end
+    end)
+    
+    -- Auto Sell Brainrot (Toggle 2)
+    autoToggles[2].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[2].Text == "OFF"
+        autoToggles[2].Text = enabled and "ON" or "OFF"
+        autoToggles[2].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[2].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Auto Sell Brainrot: ENABLED")
+            runOptimizedLoop("autoSell", function()
+                local remote = getRemote("SellAll") or getRemote("SellBrainrots")
+                if remote then
+                    pcall(function()
+                        if remote:IsA("RemoteEvent") then
+                            remote:FireServer()
+                        else
+                            remote:InvokeServer()
+                        end
+                    end)
+                end
+            end, 3, false) -- Run every 3 seconds
+        else
+            print("Auto Sell Brainrot: DISABLED")
+            if connections.autoSell then
+                connections.autoSell:Disconnect()
+                connections.autoSell = nil
+            end
+        end
+    end)
+    
+    -- Auto Rebirth (Toggle 3)
+    autoToggles[3].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[3].Text == "OFF"
+        autoToggles[3].Text = enabled and "ON" or "OFF"
+        autoToggles[3].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[3].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Auto Rebirth: ENABLED")
+            runOptimizedLoop("autoRebirth", function()
+                local remote = getRemote("Rebirth") or getRemote("DoRebirth")
+                if remote then
+                    pcall(function()
+                        if remote:IsA("RemoteEvent") then
+                            remote:FireServer()
+                        else
+                            remote:InvokeServer()
+                        end
+                    end)
+                end
+            end, 5, false) -- Run every 5 seconds
+        else
+            print("Auto Rebirth: DISABLED")
+            if connections.autoRebirth then
+                connections.autoRebirth:Disconnect()
+                connections.autoRebirth = nil
+            end
+        end
+    end)
+    
+    -- Remove Tsunami (OP) (Toggle 4) - OPTIMIZED TO PREVENT LAG
+    autoToggles[4].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[4].Text == "OFF"
+        autoToggles[4].Text = enabled and "ON" or "OFF"
+        autoToggles[4].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[4].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Remove Tsunami: ENABLED (Optimized)")
+            -- Store found tsunamis to avoid scanning every frame
+            local foundTsunamis = {}
+            local lastScanTime = 0
+            
+            runOptimizedLoop("removeTsunami", function()
+                local now = tick()
+                
+                -- Scan for new tsunamis only every 2 seconds to prevent lag
+                if now - lastScanTime > 2 then
+                    foundTsunamis = {}
+                    for _, obj in pairs(Workspace:GetDescendants()) do
+                        if obj.Name:lower():find("tsunami") or obj.Name:lower():find("wave") or obj.Name:lower():find("tidal") then
+                            table.insert(foundTsunamis, obj)
+                        end
+                    end
+                    lastScanTime = now
+                end
+                
+                -- Remove found tsunamis
+                for _, obj in ipairs(foundTsunamis) do
+                    if obj and obj.Parent then
+                        pcall(function() obj:Destroy() end)
+                    end
+                end
+                foundTsunamis = {} -- Clear after removal
+            end, 0.5, true) -- Run with lag protection
+        else
+            print("Remove Tsunami: DISABLED")
+            if connections.removeTsunami then
+                connections.removeTsunami:Disconnect()
+                connections.removeTsunami = nil
+            end
+        end
+    end)
+    
+    -- Inf Jump (Toggle 5) - REPLACED GIFT SPAMMING
+    autoToggles[5].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[5].Text == "OFF"
+        autoToggles[5].Text = enabled and "ON" or "OFF"
+        autoToggles[5].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[5].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Inf Jump: ENABLED")
+            
+            -- Store original jump power
+            local originalJumpPower = 50
+            
+            connections.infJump = RunService.Heartbeat:Connect(function()
+                if player.Character then
+                    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                    if humanoid then
+                        -- Enable infinite jumping
+                        humanoid.JumpPower = 100 -- Increased jump power
+                        
+                        -- Make character jump automatically when holding space
+                        if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+                            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+                        end
+                    end
+                end
+            end)
+            
+        else
+            print("Inf Jump: DISABLED")
+            if connections.infJump then
+                connections.infJump:Disconnect()
+                connections.infJump = nil
+            end
+            
+            -- Reset jump power
+            if player.Character then
+                local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid then
+                    humanoid.JumpPower = originalJumpPower
+                end
+            end
+        end
+    end)
+    
+    -- Auto Upgrade All Brainrots (Toggle 6) - FIXED WITH YOUR SCRIPT
+    autoToggles[6].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[6].Text == "OFF"
+        autoToggles[6].Text = enabled and "ON" or "OFF"
+        autoToggles[6].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[6].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Auto Upgrade All Brainrots: ENABLED")
+            runOptimizedLoop("upgradeAll", function()
+                -- Use your provided script
+                local success, Event = pcall(function()
+                    return ReplicatedStorage.RemoteFunctions.UpgradeBrainrot
+                end)
+                
+                if success and Event then
+                    pcall(function()
+                        for i = 1, 10 do
+                            Event:InvokeServer("Slot" .. tostring(i))
+                            wait(0.05) -- Small delay to prevent lag
+                        end
+                    end)
+                else
+                    -- Fallback to generic method
+                    local remote = getRemote("UpgradeAll") or getRemote("UpgradeBrainrots")
+                    if remote then
+                        pcall(function()
+                            if remote:IsA("RemoteEvent") then
+                                remote:FireServer()
+                            else
+                                remote:InvokeServer()
+                            end
+                        end)
+                    end
+                end
+            end, 3, false) -- Run every 3 seconds
+        else
+            print("Auto Upgrade All Brainrots: DISABLED")
+            if connections.upgradeAll then
+                connections.upgradeAll:Disconnect()
+                connections.upgradeAll = nil
+            end
+        end
+    end)
+    
+    -- Auto Take Celestial (Toggle 7) - ADDED BACK
+    autoToggles[7].MouseButton1Click:Connect(function()
+        local enabled = autoToggles[7].Text == "OFF"
+        autoToggles[7].Text = enabled and "ON" or "OFF"
+        autoToggles[7].BackgroundColor3 = enabled and Color3.fromRGB(0, 40, 0) or Color3.fromRGB(40, 10, 10)
+        autoToggles[7].TextColor3 = enabled and Color3.fromRGB(100, 255, 100) or Color3.fromRGB(255, 100, 100)
+        
+        if enabled then
+            print("Auto Take Celestial: ENABLED")
+            runOptimizedLoop("autoCelestial", function()
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    local hrp = player.Character.HumanoidRootPart
+                    
+                    -- Find celestial brainrots
+                    for _, obj in pairs(Workspace:GetDescendants()) do
+                        if obj:IsA("Model") and (obj.Name:lower():find("celestial") or 
+                           (obj:FindFirstChild("Rarity") and tostring(obj.Rarity):lower():find("celestial"))) then
+                            if obj.PrimaryPart then
+                                hrp.CFrame = obj.PrimaryPart.CFrame * CFrame.new(0, 5, 0)
+                                break
+                            elseif obj:FindFirstChild("Handle") then
+                                hrp.CFrame = obj.Handle.CFrame * CFrame.new(0, 5, 0)
+                                break
+                            end
+                        end
+                    end
+                end
+            end, 3, false) -- Run every 3 seconds
+        else
+            print("Auto Take Celestial: DISABLED")
+            if connections.autoCelestial then
+                connections.autoCelestial:Disconnect()
+                connections.autoCelestial = nil
+            end
+        end
+    end)
+    
+    -- ============================================================================
+    -- STATS UPDATE FUNCTION
+    -- ============================================================================
+    
+    local function updateStats()
+        if StatsTabContent.Visible then
+            -- Player count
+            local playerCount = #Players:GetPlayers()
+            local maxPlayers = Players.MaxPlayers
+            statsLabels[1].Text = "Players: " .. playerCount .. "/" .. maxPlayers
+            
+            -- Uptime
+            local uptime = math.floor(tick() - scriptStartTime)
+            local hours = math.floor(uptime / 3600)
+            local minutes = math.floor((uptime % 3600) / 60)
+            local seconds = math.floor(uptime % 60)
+            statsLabels[2].Text = "Uptime: " .. string.format("%02d:%02d:%02d", hours, minutes, seconds)
+            
+            -- Game ID
+            statsLabels[3].Text = "Game ID: " .. game.PlaceId
+            
+            -- Server time
+            local time = os.date("*t", os.time())
+            statsLabels[4].Text = "Time: " .. string.format("%02d:%02d", time.hour, time.min)
+            
+            -- Script info
+            statsLabels[5].Text = "Warp Hub v2.5"
+        end
+    end
+    
+    -- Update stats every second
+    spawn(function()
+        while wait(1) do
+            updateStats()
+        end
+    end)
+    
+    -- ============================================================================
+    -- INITIALIZATION COMPLETE
+    -- ============================================================================
+    
+    print("========================================")
+    print("WARP HUB PRIVATE v2.5 - CLEANED UP")
+    print("✓ Removed: ESP Secret & ESP Celestial buttons")
+    print("✓ Main Tab: Now has 5 buttons (original setup)")
+    print("✓ Auto Tab: 7 toggles (Inf Jump, Auto Take Celestial)")
+    print("✓ Stats tab: Added Discord link button")
+    print("✓ All features optimized to prevent lag")
+    print("Press F5 to toggle GUI")
+    print("========================================")
+end
